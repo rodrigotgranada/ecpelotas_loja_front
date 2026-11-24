@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import { useAuthStore } from '@/store/useAuthStore';
 import { pdvService } from '../services/pdv.service';
 import { PDV_TEXTS } from '../constants/pdv.constants';
+import { PDV_ROUTES } from '../constants/pdv.routes';
 
 const loginSchema = z.object({
   cpf: z.string().trim().min(1, PDV_TEXTS.LOGIN_IDENTIFIER_REQUIRED),
@@ -38,7 +39,7 @@ export const usePdvLogin = () => {
       const response = await pdvService.login(values.cpf, values.password);
       setSession(response.user, response.accessToken);
       toast.success(PDV_TEXTS.LOGIN_SUCCESS);
-      router.replace('/pdv');
+      router.replace(PDV_ROUTES.HOME);
     } catch (error) {
       const detail = axios.isAxiosError(error)
         ? (error.response?.data as { detail?: string; message?: string } | undefined)?.detail ??

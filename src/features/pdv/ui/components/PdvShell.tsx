@@ -2,20 +2,34 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { LogOut, Store, Package, FileText, History, LayoutDashboard, ShieldAlert } from 'lucide-react';
+import {
+  LogOut,
+  Store,
+  Package,
+  FileText,
+  History,
+  LayoutDashboard,
+  ShieldAlert,
+  Users,
+} from 'lucide-react';
 import { LayoutContainer, Title, Text, Badge, Button, Spinner } from '@/shared/ui/components';
 import { PDV_TEXTS } from '../../constants/pdv.constants';
+import { PDV_ROUTES } from '../../constants/pdv.routes';
 import { usePdvShell } from '../../hooks/usePdvShell';
 
 export interface PdvShellProps {
   children: React.ReactNode;
 }
 
+const INVENTORY_ROLES = new Set(['OWNER', 'ADMIN', 'STORE_MANAGER', 'STOCK_CLERK']);
+const STAFF_ADMIN_ROLES = new Set(['OWNER', 'ADMIN', 'STORE_MANAGER']);
+
 const NAV_ITEMS = [
-  { href: '/pdv', label: PDV_TEXTS.NAV_HOME, icon: LayoutDashboard },
-  { href: '/pdv/produtos', label: PDV_TEXTS.NAV_PRODUCTS, icon: Package },
-  { href: '/pdv/notas', label: PDV_TEXTS.NAV_INVOICES, icon: FileText },
-  { href: '/pdv/kardex', label: PDV_TEXTS.NAV_KARDEX, icon: History },
+  { href: PDV_ROUTES.HOME, label: PDV_TEXTS.NAV_HOME, icon: LayoutDashboard, scope: 'ALL' },
+  { href: PDV_ROUTES.PRODUCTS, label: PDV_TEXTS.NAV_PRODUCTS, icon: Package, scope: 'ALL' },
+  { href: PDV_ROUTES.INVOICES, label: PDV_TEXTS.NAV_INVOICES, icon: FileText, scope: 'INVENTORY' },
+  { href: PDV_ROUTES.KARDEX, label: PDV_TEXTS.NAV_KARDEX, icon: History, scope: 'INVENTORY' },
+  { href: PDV_ROUTES.STAFF, label: PDV_TEXTS.NAV_STAFF, icon: Users, scope: 'STAFF' },
 ] as const;
 
 export const PdvShell = ({ children }: PdvShellProps) => {
@@ -48,12 +62,19 @@ export const PdvShell = ({ children }: PdvShellProps) => {
     );
   }
 
+  const role = (user?.role || '').toUpperCase();
+  const visibleNavItems = NAV_ITEMS.filter((item) => {
+    if (item.scope === 'INVENTORY') return INVENTORY_ROLES.has(role);
+    if (item.scope === 'STAFF') return STAFF_ADMIN_ROLES.has(role);
+    return true;
+  });
+
   return (
     <LayoutContainer className="min-h-screen flex flex-col">
       <LayoutContainer as="header" className="border-b border-border bg-surface/90 backdrop-blur-xs sticky top-0 z-30">
         <LayoutContainer className="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
           <LayoutContainer className="flex items-center justify-between gap-4">
-            <Link href="/pdv" className="flex items-center gap-2.5">
+            <Link href={PDV_ROUTES.HOME} className="flex items-center gap-2.5">
               <Title level="h2" className="text-base sm:text-lg font-extrabold text-text-primary">
                 {PDV_TEXTS.BRAND}
               </Title>
@@ -66,9 +87,12 @@ export const PdvShell = ({ children }: PdvShellProps) => {
           </LayoutContainer>
 
           <LayoutContainer as="nav" className="flex flex-wrap items-center gap-2">
-            {NAV_ITEMS.map((item) => {
+            {visibleNavItems.map((item) => {
               const Icon = item.icon;
-              const active = item.href === '/pdv' ? pathname === '/pdv' : pathname.startsWith(item.href);
+              const active =
+                item.href === PDV_ROUTES.HOME
+                  ? pathname === PDV_ROUTES.HOME
+                  : pathname.startsWith(item.href);
               return (
                 <Link key={item.href} href={item.href}>
                   <Button variant={active ? 'primary' : 'outline'} className="px-3 py-1.5 text-xs">

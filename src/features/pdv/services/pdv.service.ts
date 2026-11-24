@@ -199,4 +199,36 @@ export const pdvService = {
     });
     return res.data;
   },
+
+  listStaff: async (): Promise<StoreUser[]> => {
+    const res = await api.get<StoreUser[]>('/admin/staff');
+    return res.data;
+  },
+
+  createStaff: async (payload: {
+    fullName: string;
+    email?: string;
+    cpf?: string;
+    role: string;
+    password: string;
+    active: boolean;
+  }): Promise<StoreUser> => {
+    const res = await api.post<StoreUser>('/admin/staff', payload);
+    return res.data;
+  },
+
+  updateStaff: async (
+    id: string,
+    payload: {
+      fullName: string;
+      email?: string;
+      cpf?: string;
+      role: string;
+      password?: string;
+      active: boolean;
+    },
+  ): Promise<StoreUser> => {
+    const res = await api.put<StoreUser>(`/admin/staff/${id}`, payload);
+    return res.data;
+  },
 };

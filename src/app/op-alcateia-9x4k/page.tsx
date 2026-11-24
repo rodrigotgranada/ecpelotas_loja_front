@@ -1,5 +1,5 @@
 import { PdvHomeFeature } from '@/features/pdv';
 
-export default function PdvPage() {
+export default function OpHomePage() {
   return <PdvHomeFeature />;
 }

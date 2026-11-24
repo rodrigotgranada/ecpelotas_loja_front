@@ -1,5 +1,5 @@
 import { PdvInvoicesFeature } from '@/features/pdv';
 
-export default function PdvInvoicesPage() {
+export default function OpInvoicesPage() {
   return <PdvInvoicesFeature />;
 }

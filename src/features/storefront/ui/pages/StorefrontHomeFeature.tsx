@@ -46,9 +46,6 @@ export const StorefrontHomeFeature = () => {
           </LayoutContainer>
 
           <LayoutContainer className="flex flex-wrap gap-3 shrink-0">
-            <Link href="/pdv">
-              <Button variant="primary">{STOREFRONT_TEXTS.BUTTON_OPEN_PDV}</Button>
-            </Link>
             <Link href={portalUrl}>
               <Button variant="outline">
                 {STOREFRONT_TEXTS.BUTTON_BACK_PORTAL}

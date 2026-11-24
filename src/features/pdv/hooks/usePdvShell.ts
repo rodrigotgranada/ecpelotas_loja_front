@@ -4,6 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { pdvService } from '../services/pdv.service';
+import { PDV_ROUTES } from '../constants/pdv.routes';
 
 const ALLOWED_PDV_ROLES = new Set([
   'OWNER',
@@ -29,14 +30,14 @@ export const usePdvShell = () => {
   useEffect(() => {
     if (!hasHydrated) return;
     if (!user || !accessToken) {
-      router.replace('/pdv/login');
+      router.replace(PDV_ROUTES.LOGIN);
     }
   }, [hasHydrated, user, accessToken, router]);
 
   const handleLogout = async () => {
     await pdvService.logout();
     logoutStore();
-    router.replace('/pdv/login');
+    router.replace(PDV_ROUTES.LOGIN);
   };
 
   return {

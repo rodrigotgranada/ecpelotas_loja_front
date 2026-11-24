@@ -2,31 +2,39 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Package, FileText, History, MessageSquare } from 'lucide-react';
+import { Package, FileText, History, MessageSquare, Users } from 'lucide-react';
 import { LayoutContainer, Title, Text, Badge, Button } from '@/shared/ui/components';
 import { PDV_TEXTS } from '../../constants/pdv.constants';
+import { PDV_ROUTES } from '../../constants/pdv.routes';
 import { PdvShell } from '../components/PdvShell';
 
 const MODULE_CARDS = [
   {
-    href: '/pdv/produtos',
+    href: PDV_ROUTES.PRODUCTS,
     title: PDV_TEXTS.CARD_PRODUCTS_TITLE,
     description: PDV_TEXTS.CARD_PRODUCTS_DESC,
     icon: Package,
     available: true,
   },
   {
-    href: '/pdv/notas',
+    href: PDV_ROUTES.INVOICES,
     title: PDV_TEXTS.CARD_INVOICES_TITLE,
     description: PDV_TEXTS.CARD_INVOICES_DESC,
     icon: FileText,
     available: true,
   },
   {
-    href: '/pdv/kardex',
+    href: PDV_ROUTES.KARDEX,
     title: PDV_TEXTS.CARD_KARDEX_TITLE,
     description: PDV_TEXTS.CARD_KARDEX_DESC,
     icon: History,
+    available: true,
+  },
+  {
+    href: PDV_ROUTES.STAFF,
+    title: PDV_TEXTS.CARD_STAFF_TITLE,
+    description: PDV_TEXTS.CARD_STAFF_DESC,
+    icon: Users,
     available: true,
   },
   {

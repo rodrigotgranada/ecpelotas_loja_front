@@ -3,14 +3,17 @@ import { persist } from 'zustand/middleware';
 
 export interface StoreUser {
   id: string;
-  portalUserId: string;
+  portalUserId?: string | null;
   fullName: string;
   email?: string;
   cpf?: string;
   role: string;
+  authSource?: string;
   isSocioActive: boolean;
   socioPlanName?: string;
   active: boolean;
+  lastLoginAt?: string;
+  createdAt?: string;
 }
 
 interface AuthState {

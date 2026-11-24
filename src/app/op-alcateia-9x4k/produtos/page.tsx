@@ -1,5 +1,5 @@
 import { PdvProductsFeature } from '@/features/pdv';
 
-export default function PdvProductsPage() {
+export default function OpProductsPage() {
   return <PdvProductsFeature />;
 }
