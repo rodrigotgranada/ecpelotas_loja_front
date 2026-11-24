@@ -1,8 +1,9 @@
 import { api } from './api';
 
 export interface EnvTestResponse {
-  stage?: 'PROD' | 'DEV';
+  stage?: 'LOCAL' | 'DEV' | 'PROD';
   environment?: string;
+  databaseLabel?: string;
   storageProvider?: string;
 }
 
