@@ -1,14 +1,16 @@
 export const STOREFRONT_TEXTS = {
   BADGE: 'Loja Oficial Alcateia',
-  TITLE: 'Vitrine Áureo-Cerúlea em Implantação',
+  TITLE: 'Produtos Oficiais do Esporte Clube Pelotas',
   SUBTITLE:
-    'Plataforma independente de produtos oficiais do Esporte Clube Pelotas integrada ao WhatsApp e ao PDV da loja física.',
-  CARD_CATALOG_TITLE: 'Vitrine & Carrinho WhatsApp',
-  CARD_CATALOG_DESC:
-    'Seleção por tamanho/variação, validação opcional de benefício para Sócios e pré-reserva inteligente por horário comercial.',
-  CARD_PDV_TITLE: 'Acesso Operacional / PDV',
-  CARD_PDV_DESC:
-    'Painel dedicado para vendedores editarem reservas durante o atendimento no WhatsApp, lançarem notas de entrada e darem baixa no estoque.',
-  BUTTON_OPEN_PDV: 'Abrir Painel PDV',
-  BUTTON_BACK_PORTAL: 'Voltar ao Portal do Lobo',
+    'Catálogo integrado em tempo real com o estoque da loja física. Escolha seus produtos e finalize a reserva via WhatsApp (Fase 2).',
+  BUTTON_OPEN_PDV: 'Acesso Operacional / PDV',
+  BUTTON_BACK_PORTAL: 'Portal do Lobo',
+  SEARCH_PLACEHOLDER: 'Buscar camisa, boné, SKU...',
+  ALL_CATEGORIES: 'Todas as Categorias',
+  LOADING: 'Carregando catálogo oficial...',
+  EMPTY_STATE: 'Nenhum produto cadastrado no catálogo ainda. Acesse /pdv para cadastrar ou importar NF-e.',
+  STOCK_AVAILABLE_SUFFIX: 'disponíveis',
+  OUT_OF_STOCK: 'Esgotado',
+  MEMBER_PRICE_PREFIX: 'Sócio:',
+  CURRENCY_PREFIX: 'R$',
 };
