@@ -2,47 +2,62 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Package, FileText, History, MessageSquare, Users } from 'lucide-react';
-import { LayoutContainer, Title, Text, Badge, Button } from '@/shared/ui/components';
+import {
+  Package,
+  FileText,
+  History,
+  MessageSquare,
+  Users,
+  ShoppingBag,
+  Settings,
+} from 'lucide-react';
+import { LayoutContainer, Title, Text, Button } from '@/shared/ui/components';
 import { PDV_TEXTS } from '../../constants/pdv.constants';
 import { PDV_ROUTES } from '../../constants/pdv.routes';
 import { PdvShell } from '../components/PdvShell';
 
 const MODULE_CARDS = [
   {
+    href: PDV_ROUTES.SALES,
+    title: PDV_TEXTS.CARD_SALES_TITLE,
+    description: PDV_TEXTS.CARD_SALES_DESC,
+    icon: MessageSquare,
+  },
+  {
+    href: PDV_ROUTES.COUNTER,
+    title: PDV_TEXTS.CARD_COUNTER_TITLE,
+    description: PDV_TEXTS.CARD_COUNTER_DESC,
+    icon: ShoppingBag,
+  },
+  {
     href: PDV_ROUTES.PRODUCTS,
     title: PDV_TEXTS.CARD_PRODUCTS_TITLE,
     description: PDV_TEXTS.CARD_PRODUCTS_DESC,
     icon: Package,
-    available: true,
   },
   {
     href: PDV_ROUTES.INVOICES,
     title: PDV_TEXTS.CARD_INVOICES_TITLE,
     description: PDV_TEXTS.CARD_INVOICES_DESC,
     icon: FileText,
-    available: true,
   },
   {
     href: PDV_ROUTES.KARDEX,
     title: PDV_TEXTS.CARD_KARDEX_TITLE,
     description: PDV_TEXTS.CARD_KARDEX_DESC,
     icon: History,
-    available: true,
   },
   {
     href: PDV_ROUTES.STAFF,
     title: PDV_TEXTS.CARD_STAFF_TITLE,
     description: PDV_TEXTS.CARD_STAFF_DESC,
     icon: Users,
-    available: true,
   },
   {
-    href: null,
-    title: PDV_TEXTS.CARD_WHATSAPP_TITLE,
-    description: PDV_TEXTS.CARD_WHATSAPP_DESC,
-    icon: MessageSquare,
-    available: false,
+    href: PDV_ROUTES.SETTINGS,
+    title: PDV_TEXTS.CARD_SETTINGS_TITLE,
+    description: PDV_TEXTS.CARD_SETTINGS_DESC,
+    icon: Settings,
   },
 ] as const;
 
@@ -59,7 +74,7 @@ export const PdvHomeFeature = () => {
           </Text>
         </LayoutContainer>
 
-        <LayoutContainer className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <LayoutContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {MODULE_CARDS.map((card) => {
             const Icon = card.icon;
             return (
@@ -68,10 +83,7 @@ export const PdvHomeFeature = () => {
                 className="bg-surface border border-border rounded-2xl p-6 flex flex-col justify-between gap-5"
               >
                 <LayoutContainer className="space-y-3">
-                  <LayoutContainer className="flex items-center justify-between gap-3">
-                    <Icon className="w-6 h-6 text-primary shrink-0" />
-                    {!card.available && <Badge variant="default">{PDV_TEXTS.CARD_PHASE_SOON}</Badge>}
-                  </LayoutContainer>
+                  <Icon className="w-6 h-6 text-primary shrink-0" />
                   <Title level="h2" className="text-lg font-bold text-text-primary">
                     {card.title}
                   </Title>
@@ -80,13 +92,11 @@ export const PdvHomeFeature = () => {
                   </Text>
                 </LayoutContainer>
 
-                {card.available && card.href && (
-                  <LayoutContainer>
-                    <Link href={card.href}>
-                      <Button variant="primary">{PDV_TEXTS.CARD_ACCESS_ACTION}</Button>
-                    </Link>
-                  </LayoutContainer>
-                )}
+                <LayoutContainer>
+                  <Link href={card.href}>
+                    <Button variant="primary">{PDV_TEXTS.CARD_ACCESS_ACTION}</Button>
+                  </Link>
+                </LayoutContainer>
               </LayoutContainer>
             );
           })}

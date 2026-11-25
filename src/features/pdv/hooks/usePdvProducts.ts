@@ -325,5 +325,6 @@ export const usePdvProducts = () => {
     openAdjustModal,
     closeAdjustModal,
     handleConfirmAdjust,
+    refreshProducts: () => fetchData(search.trim() || undefined),
   };
 };

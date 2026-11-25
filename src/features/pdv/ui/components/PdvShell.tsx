@@ -11,6 +11,9 @@ import {
   LayoutDashboard,
   ShieldAlert,
   Users,
+  MessageSquare,
+  ShoppingBag,
+  Settings,
 } from 'lucide-react';
 import { LayoutContainer, Title, Text, Badge, Button, Spinner } from '@/shared/ui/components';
 import { PDV_TEXTS } from '../../constants/pdv.constants';
@@ -21,15 +24,19 @@ export interface PdvShellProps {
   children: React.ReactNode;
 }
 
+const SALES_ROLES = new Set(['OWNER', 'ADMIN', 'STORE_MANAGER', 'SELLER']);
 const INVENTORY_ROLES = new Set(['OWNER', 'ADMIN', 'STORE_MANAGER', 'STOCK_CLERK']);
 const STAFF_ADMIN_ROLES = new Set(['OWNER', 'ADMIN', 'STORE_MANAGER']);
 
 const NAV_ITEMS = [
   { href: PDV_ROUTES.HOME, label: PDV_TEXTS.NAV_HOME, icon: LayoutDashboard, scope: 'ALL' },
+  { href: PDV_ROUTES.SALES, label: PDV_TEXTS.NAV_SALES, icon: MessageSquare, scope: 'SALES' },
+  { href: PDV_ROUTES.COUNTER, label: PDV_TEXTS.NAV_COUNTER, icon: ShoppingBag, scope: 'SALES' },
   { href: PDV_ROUTES.PRODUCTS, label: PDV_TEXTS.NAV_PRODUCTS, icon: Package, scope: 'ALL' },
   { href: PDV_ROUTES.INVOICES, label: PDV_TEXTS.NAV_INVOICES, icon: FileText, scope: 'INVENTORY' },
   { href: PDV_ROUTES.KARDEX, label: PDV_TEXTS.NAV_KARDEX, icon: History, scope: 'INVENTORY' },
   { href: PDV_ROUTES.STAFF, label: PDV_TEXTS.NAV_STAFF, icon: Users, scope: 'STAFF' },
+  { href: PDV_ROUTES.SETTINGS, label: PDV_TEXTS.NAV_SETTINGS, icon: Settings, scope: 'STAFF' },
 ] as const;
 
 export const PdvShell = ({ children }: PdvShellProps) => {
@@ -64,6 +71,7 @@ export const PdvShell = ({ children }: PdvShellProps) => {
 
   const role = (user?.role || '').toUpperCase();
   const visibleNavItems = NAV_ITEMS.filter((item) => {
+    if (item.scope === 'SALES') return SALES_ROLES.has(role);
     if (item.scope === 'INVENTORY') return INVENTORY_ROLES.has(role);
     if (item.scope === 'STAFF') return STAFF_ADMIN_ROLES.has(role);
     return true;
@@ -72,18 +80,34 @@ export const PdvShell = ({ children }: PdvShellProps) => {
   return (
     <LayoutContainer className="min-h-screen flex flex-col">
       <LayoutContainer as="header" className="border-b border-border bg-surface/90 backdrop-blur-xs sticky top-0 z-30">
-        <LayoutContainer className="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+        <LayoutContainer className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3">
           <LayoutContainer className="flex items-center justify-between gap-4">
             <Link href={PDV_ROUTES.HOME} className="flex items-center gap-2.5">
               <Title level="h2" className="text-base sm:text-lg font-extrabold text-text-primary">
                 {PDV_TEXTS.BRAND}
               </Title>
             </Link>
-            {user && (
-              <LayoutContainer className="flex items-center gap-2 lg:hidden">
-                <Badge variant="primary">{user.role}</Badge>
-              </LayoutContainer>
-            )}
+
+            <LayoutContainer className="flex items-center gap-3">
+              {user && (
+                <LayoutContainer className="hidden sm:flex items-center gap-2">
+                  <Text as="span" className="text-xs text-text-secondary truncate max-w-[160px]">
+                    {user.fullName}
+                  </Text>
+                  <Badge variant="primary">{user.role}</Badge>
+                </LayoutContainer>
+              )}
+              <Link href="/">
+                <Button variant="ghost" className="px-2.5 py-1.5 text-xs">
+                  <Store className="w-3.5 h-3.5" />
+                  {PDV_TEXTS.NAV_STOREFRONT}
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={handleLogout} className="px-3 py-1.5 text-xs">
+                <LogOut className="w-3.5 h-3.5" />
+                {PDV_TEXTS.BTN_LOGOUT}
+              </Button>
+            </LayoutContainer>
           </LayoutContainer>
 
           <LayoutContainer as="nav" className="flex flex-wrap items-center gap-2">
@@ -102,27 +126,6 @@ export const PdvShell = ({ children }: PdvShellProps) => {
                 </Link>
               );
             })}
-          </LayoutContainer>
-
-          <LayoutContainer className="flex items-center justify-between lg:justify-end gap-3">
-            {user && (
-              <LayoutContainer className="hidden lg:flex items-center gap-2">
-                <Text as="span" className="text-xs text-text-secondary truncate max-w-[160px]">
-                  {user.fullName}
-                </Text>
-                <Badge variant="primary">{user.role}</Badge>
-              </LayoutContainer>
-            )}
-            <Link href="/">
-              <Button variant="ghost" className="px-2.5 py-1.5 text-xs">
-                <Store className="w-3.5 h-3.5" />
-                {PDV_TEXTS.NAV_STOREFRONT}
-              </Button>
-            </Link>
-            <Button variant="outline" onClick={handleLogout} className="px-3 py-1.5 text-xs">
-              <LogOut className="w-3.5 h-3.5" />
-              {PDV_TEXTS.BTN_LOGOUT}
-            </Button>
           </LayoutContainer>
         </LayoutContainer>
       </LayoutContainer>

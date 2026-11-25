@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Plus, Search, Pencil, SlidersHorizontal, Package } from 'lucide-react';
+import { Plus, Search, Pencil, SlidersHorizontal, Package, Tags } from 'lucide-react';
 import {
   LayoutContainer,
   Title,
@@ -14,10 +14,12 @@ import {
 } from '@/shared/ui/components';
 import { PDV_TEXTS } from '../../constants/pdv.constants';
 import { usePdvProducts } from '../../hooks/usePdvProducts';
+import { useCategoryManager } from '../../hooks/useCategoryManager';
 import { formatCurrencyBrl } from '../../utils/pdv.formatters';
 import { PdvShell } from '../components/PdvShell';
 import { ProductEditorDrawer } from '../components/ProductEditorDrawer';
 import { StockAdjustModal } from '../components/StockAdjustModal';
+import { CategoryManagerModal } from '../components/CategoryManagerModal';
 
 export const PdvProductsFeature = () => {
   const {
@@ -51,7 +53,10 @@ export const PdvProductsFeature = () => {
     openAdjustModal,
     closeAdjustModal,
     handleConfirmAdjust,
+    refreshProducts,
   } = usePdvProducts();
+
+  const categoryManager = useCategoryManager(refreshProducts);
 
   return (
     <PdvShell>
@@ -60,10 +65,16 @@ export const PdvProductsFeature = () => {
           <Title level="h1" className="text-2xl font-extrabold text-text-primary">
             {PDV_TEXTS.PRODUCTS_TITLE}
           </Title>
-          <Button variant="primary" onClick={openCreateDrawer}>
-            <Plus className="w-4 h-4" />
-            {PDV_TEXTS.PRODUCTS_NEW_BTN}
-          </Button>
+          <LayoutContainer className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={categoryManager.openModal}>
+              <Tags className="w-4 h-4" />
+              {PDV_TEXTS.CATEGORIES_BTN}
+            </Button>
+            <Button variant="primary" onClick={openCreateDrawer}>
+              <Plus className="w-4 h-4" />
+              {PDV_TEXTS.PRODUCTS_NEW_BTN}
+            </Button>
+          </LayoutContainer>
         </LayoutContainer>
 
         <LayoutContainer className="relative flex items-center">
@@ -201,6 +212,23 @@ export const PdvProductsFeature = () => {
         isSubmitting={isAdjusting}
         onClose={closeAdjustModal}
         onSubmit={handleConfirmAdjust}
+      />
+
+      <CategoryManagerModal
+        isOpen={categoryManager.isOpen}
+        categories={categories}
+        editingId={categoryManager.editingId}
+        name={categoryManager.name}
+        onChangeName={categoryManager.setName}
+        description={categoryManager.description}
+        onChangeDescription={categoryManager.setDescription}
+        sortOrder={categoryManager.sortOrder}
+        onChangeSortOrder={categoryManager.setSortOrder}
+        isSaving={categoryManager.isSaving}
+        onSelectEdit={categoryManager.startEditing}
+        onResetForm={categoryManager.resetForm}
+        onClose={categoryManager.closeModal}
+        onSubmit={categoryManager.handleSubmit}
       />
     </PdvShell>
   );
