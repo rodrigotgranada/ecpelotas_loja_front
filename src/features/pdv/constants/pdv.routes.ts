@@ -1,4 +1,4 @@
-export const PDV_BASE_PATH = '/op-alcateia-9x4k';
+export const PDV_BASE_PATH = '/alcateia-1908';
 
 export const PDV_ROUTES = {
   HOME: PDV_BASE_PATH,
